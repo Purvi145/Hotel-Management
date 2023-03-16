@@ -1,8 +1,9 @@
-package Hotel;
+package HotelManagement;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 
-public class Counter {
+public class FileCounter {
 	public static int getCountRows() {
 		int c = 0;
 		try {
@@ -20,4 +21,3 @@ public class Counter {
 		return c;
 	}
 }
-

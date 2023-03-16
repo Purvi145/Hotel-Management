@@ -1,4 +1,6 @@
-package Hotel;
+package HotelManagement;
+
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -6,6 +8,9 @@ import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -15,50 +20,38 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-
+import javax.swing.JScrollPane;
 
 public class TablesOrder extends JFrame {
 
 	String selecteditem;
-	
 	JComboBox<String> comboBox;
 	ArrayList<String> selectedOptions = new ArrayList<String>();
-    JCheckBox [ ] c;
+	JCheckBox[] c;
 	private JFrame frame;
-	int r=0;
+	int r = 0;
 
-	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TablesOrder window = new TablesOrder();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	Hashtable<String, ArrayList<String>> h = new Hashtable<String, ArrayList<String>>();
 
-	/**
-	 * Create the application.
-	 * 
-	 * @throws Exception
-	 */
+//	public static void main(String[] args) {
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					TablesOrder window = new TablesOrder();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
+
+//	public TablesOrder() throws Exception {
+//		initialize();
+//	}
+
 	public TablesOrder() throws Exception {
-		initialize();
-	}
-
-	/**
-	 * Initialize the contents of the frame.
-	 * 
-	 * @throws Exception
-	 */
-	private void initialize() throws Exception {
+		super("Tableorder");
 		frame = new JFrame();
 		frame.getContentPane().setFont(new Font("Yu Gothic UI", Font.BOLD, 11));
 		frame.setBounds(100, 100, 450, 300);
@@ -77,18 +70,12 @@ public class TablesOrder extends JFrame {
 			}
 		});
 
-		
-
-//	    JScrollPane jsp = new JScrollPane(c);
-//		Container con = getContentPane();
-//		con.add(jsp);
-//	    c.addItemListener(this);
-
 		String line;
 		try {
 			BufferedReader r = new BufferedReader(
 					new FileReader("C:\\Users\\Purvi\\Documents\\JAVA Classes\\TableDetails.txt"));
 			while ((line = r.readLine()) != null) {
+
 				comboBox.addItem(line);
 			}
 
@@ -106,29 +93,23 @@ public class TablesOrder extends JFrame {
 		try {
 			BufferedReader reader = new BufferedReader(
 					new FileReader("C:\\Users\\Purvi\\Documents\\JAVA Classes\\Itemprice.txt"));
-		
-			
-			c = new JCheckBox[100];
-			
+
+			c = new JCheckBox[FileCounter.getCountRows()];
 			while ((eachline = reader.readLine()) != null) {
-				String cols[] = eachline.split(",");
+				String cols[] = eachline.split("-");
 				// System.out.println(cols[0]);
 				c[r] = new JCheckBox(cols[0]);
-			
-				c[r].setBounds(6, y, 100, 23);
+				c[r].setBounds(6, y, 150, 23);
 				frame.getContentPane().add(c[r]);
 				c[r].addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						JCheckBox c = (JCheckBox) e.getSource();
-				 		if(c.isSelected()) {
-				 			selectedOptions.add(c.getText());
-				 			r++;
-				 		}
-				 			else 
-				 			{
-				 				selectedOptions.remove(c.getText());
-				 			} 
-				 			
+						if (c.isSelected()) {
+							selectedOptions.add(c.getText());
+							r++;
+						} else {
+							selectedOptions.remove(c.getText());
+						}
 
 					}
 				});
@@ -145,22 +126,27 @@ public class TablesOrder extends JFrame {
 
 		JButton submit = new JButton("Submit");
 		submit.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				Hashtable<String, ArrayList<String>> h = new Hashtable<String, ArrayList<String>>();
-				{
-					h.put(selecteditem, selectedOptions);
+			public void actionPerformed(ActionEvent arg0) {// hashtable
 
-				}
+				h.put(selecteditem, selectedOptions);
+
+				//System.out.println(h);
 				Enumeration<String> e = h.keys();
 				while (e.hasMoreElements()) {
 					String k = e.nextElement();
 					ArrayList<String> v = h.get(k);
-					System.out.println(k + v);
+					// System.out.println(c.getText());
+					// System.out.println(k + v);
+				 
+					GenerateBill g = new GenerateBill(h);
+
 				}
 
 			}
 		});
 		submit.setBounds(311, 202, 89, 23);
 		frame.getContentPane().add(submit);
+		frame.setVisible(true);
 	}
+
 }

@@ -1,4 +1,6 @@
-package Hotel;
+package HotelManagement;
+
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,9 +22,7 @@ public class Orderprices {
 		private JTextField item;
 		private JTextField price;
 
-		/**
-		 * Launch the application.
-		 */
+		
 		public static void main(String[] args) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
@@ -36,16 +36,9 @@ public class Orderprices {
 			});
 		}
 
-		/**
-		 * Create the application.
-		 */
 		public Orderprices() {
 			initialize();
 		}
-
-		/**
-		 * Initialize the contents of the frame.
-		 */
 		private void initialize() {
 			frame = new JFrame();
 			frame.setBounds(100, 100, 450, 300);
@@ -64,7 +57,6 @@ public class Orderprices {
 			item.setBounds(133, 41, 164, 26);
 			frame.getContentPane().add(item);
 			item.setColumns(10);
-			
 			price = new JTextField();
 			price.setBounds(133, 86, 164, 26);
 			frame.getContentPane().add(price);
@@ -72,7 +64,6 @@ public class Orderprices {
 			
 			JButton btnNewButton = new JButton("SUBMIT");
 			btnNewButton.addActionListener(new ActionListener() {
-				@SuppressWarnings("resource")
 				public void actionPerformed(ActionEvent arg0) {
 					
 					String items = item.getText();
@@ -80,25 +71,40 @@ public class Orderprices {
 					
 					PrintWriter p;
 					try {
-						p=new PrintWriter(new FileWriter("C:\\Users\\Purvi\\Documents\\JAVA Classes\\Itemprice.txt",true));
-						p.println(items.trim() + "," + Prices.trim());
+						p=new PrintWriter
+								(new FileWriter("C:\\Users\\Purvi\\Documents\\JAVA Classes\\Itemprice.txt",true));
+						p.println(items.trim() + "-" + Prices.trim());
 						p.close();
 					
 						JOptionPane.showMessageDialog(null, "Submitted successfully");
 					
 						item.setText("");
 						price.setText("");
-
+						
 					}
 					
-					catch (IOException e) {
+					catch (Exception e) {
 						e.printStackTrace();
 					}
 			
 				}
 
 			});
-			btnNewButton.setBounds(281, 162, 89, 23);
+			btnNewButton.setBounds(93, 162, 89, 23);
 			frame.getContentPane().add(btnNewButton);
+			
+			JButton btnNewButton_1 = new JButton("NEXT");
+			btnNewButton_1.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent arg0) {
+					try {
+						TablesOrder t = new TablesOrder();
+					} catch (Exception e) {
+						
+						e.printStackTrace();
+					}
+				}
+			});
+			btnNewButton_1.setBounds(269, 162, 89, 23);
+			frame.getContentPane().add(btnNewButton_1);
 		}
 	}
